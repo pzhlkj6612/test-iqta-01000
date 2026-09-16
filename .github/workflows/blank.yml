@@ -1,0 +1,45 @@
+name: CI
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          repository: pzhlkj6612/forked-install-qt-action
+          ref: 824eafec22a5fb2184b47954fd39b729c89e3e65
+
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: action/
+
+      - run: |
+          cd action
+          npm ci || npm install
+        shell: bash
+
+      - run: |
+          cd action
+          npm run build
+
+      # See the root "action.yml" file.
+      - name: Use local built internal action (hack)
+        run: |
+          sed -i.bak 's|uses: $/action|uses: ./action|' action.yml
+          diff -u action.yml.bak action.yml || true
+          git status --porcelain
+        shell: bash
+
+      - uses: ./
+        with:
+          target: android
+          modules: qtsensors
+          version: 6.99.0
+          examples: true
+          example-archives: qtbase
+          example-modules: qtsensors
