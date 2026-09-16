@@ -10,7 +10,7 @@ jobs:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           repository: pzhlkj6612/forked-install-qt-action
-          ref: 824eafec22a5fb2184b47954fd39b729c89e3e65
+          ref: a032d8ac8174fb2dda1a00ac2a58a7d484fa22d5
 
       - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
